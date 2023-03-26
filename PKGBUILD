@@ -3,7 +3,7 @@
 _pkgname=proxypool
 pkgname=${_pkgname}-git
 pkgver=0.7.12.r28.gae4e6bd
-pkgrel=6
+pkgrel=7
 pkgdesc="Automatically grab ss, ssr, vmess, trojan node information from the Internet"
 arch=('i686' 'x86_64' 'arm' 'armv6h' 'armv7h' 'aarch64')
 url="https://github.com/ssrlive/proxypool"
@@ -67,7 +67,7 @@ package() {
   install -Dm644 config/config.yaml -t "${pkgdir}"/etc/proxypool/
   install -Dm644 config/source.yaml -t "${pkgdir}"/etc/proxypool/
   
-  install -Dm755 bin/proxypool-${GOOS}-${GOARCH} -t "${pkgdir}"/usr/share/webapps/proxypool/
+  install -Dm755 bin/proxypool-${GOOS}-${GOARCH} "${pkgdir}"/usr/share/webapps/proxypool/proxypool
   cp -rf assets/ "${pkgdir}"/usr/share/webapps/proxypool/
   ln -vsf /etc/proxypool/config.yaml "${pkgdir}"/usr/share/webapps/proxypool/
   ln -vsf /etc/proxypool/source.yaml "${pkgdir}"/usr/share/webapps/proxypool/

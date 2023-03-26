@@ -1,7 +1,7 @@
 pkgbase = proxypool-git
 	pkgdesc = Automatically grab ss, ssr, vmess, trojan node information from the Internet
 	pkgver = 0.7.12.r28.gae4e6bd
-	pkgrel = 6
+	pkgrel = 7
 	url = https://github.com/ssrlive/proxypool
 	arch = i686
 	arch = x86_64
