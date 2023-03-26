@@ -1,0 +1,24 @@
+From 6db57c6fbf70c687e221e8f14b2599a7c97902a5 Mon Sep 17 00:00:00 2001
+From: atom long <atom.long@hotmail.com>
+Date: Sun, 26 Mar 2023 00:57:45 +0800
+Subject: [PATCH 3/4] Set the country info based on Out IP.
+
+---
+ internal/app/task.go | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/internal/app/task.go b/internal/app/task.go
+index c5cf7f3..70b0a21 100644
+--- a/internal/app/task.go
++++ b/internal/app/task.go
+@@ -102,6 +102,7 @@ func CrawlGo() {
+ 				_, c, e := geoIp.GeoIpDB.Find(s.OutIp)
+ 				if e == nil {
+ 					proxies[i].SetName(fmt.Sprintf("Relay_%s-%s", proxies[i].BaseInfo().Name, c))
++					proxies[i].SetCountry(c)
+ 				}
+ 			} else if s.Pool {
+ 				proxies[i].SetName(fmt.Sprintf("Pool_%s", proxies[i].BaseInfo().Name))
+-- 
+2.40.0
+

@@ -1,0 +1,114 @@
+From 6cc2d49d63addba35e7d3934c226812e8990f512 Mon Sep 17 00:00:00 2001
+From: atom long <atom.long@hotmail.com>
+Date: Sun, 26 Mar 2023 00:13:09 +0800
+Subject: [PATCH 2/4] support mysql
+
+---
+ config/config.go           |  1 +
+ config/config.yaml         |  3 ++-
+ internal/database/db.go    | 29 +++++++++++++++++++++++++++--
+ internal/database/proxy.go |  2 +-
+ 4 files changed, 31 insertions(+), 4 deletions(-)
+
+diff --git a/config/config.go b/config/config.go
+index 7ce9bda..b2a55de 100644
+--- a/config/config.go
++++ b/config/config.go
+@@ -21,6 +21,7 @@ var configFilePath = "config.yaml"
+ type ConfigOptions struct {
+ 	Domain                string   `json:"domain" yaml:"domain"`
+ 	Port                  string   `json:"port" yaml:"port"`
++	DatabaseType          string   `json:"database_type" yaml:"database_type"`
+ 	DatabaseUrl           string   `json:"database_url" yaml:"database_url"`
+ 	CrawlInterval         uint64   `json:"crawl-interval" yaml:"crawl-interval"`
+ 	CFEmail               string   `json:"cf_email" yaml:"cf_email"`
+diff --git a/config/config.yaml b/config/config.yaml
+index d0fc88f..df6b9fb 100644
+--- a/config/config.yaml
++++ b/config/config.yaml
+@@ -11,7 +11,8 @@ source-files:
+ 
+ # ======= 可选项，留空使用default值  ======= #
+ 
+-#====Postgresql database info ====#
++#==== Database info ====#
++database_type: "postgres"   # postgres or mysql, leave empty to disable database.
+ database_url: ""
+ 
+ #==== Interval between each crawling ====#
+diff --git a/internal/database/db.go b/internal/database/db.go
+index 03ad8e0..56afc55 100644
+--- a/internal/database/db.go
++++ b/internal/database/db.go
+@@ -1,12 +1,14 @@
+ package database
+ 
+ import (
++	"errors"
+ 	"os"
+ 
+ 	"github.com/ssrlive/proxypool/log"
+ 
+ 	"github.com/ssrlive/proxypool/config"
+ 
++	"gorm.io/driver/mysql"
+ 	"gorm.io/driver/postgres"
+ 	"gorm.io/gorm"
+ 	"gorm.io/gorm/logger"
+@@ -15,15 +17,38 @@ import (
+ var DB *gorm.DB
+ 
+ func connect() (err error) {
++	var dsn string
++	var dial gorm.Dialector
+ 	// localhost url
+-	dsn := "user=proxypool password=proxypool dbname=proxypool port=5432 sslmode=disable TimeZone=Asia/Shanghai"
+ 	if url := config.Config.DatabaseUrl; url != "" {
+ 		dsn = url
+ 	}
+ 	if url := os.Getenv("DATABASE_URL"); url != "" {
+ 		dsn = url
+ 	}
+-	DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{
++	dbtype := config.Config.DatabaseType
++	switch dbtype {
++	case "postgres":
++		if dsn == "" {
++			dsn = "user=proxypool password=proxypool dbname=proxypool port=5432 sslmode=disable TimeZone=Asia/Shanghai"
++		}
++		dial = postgres.Open(dsn)
++	case "mysql":
++		if dsn == "" {
++			dsn = "proxypool:proxypool@tcp(127.0.0.1:3306)/proxypool?parseTime=True&loc=Asia%2FShanghai"
++		}
++		dial = mysql.Open(dsn)
++	case "":
++		DB = nil
++		log.Warnln("database disabled: \n\t\tUse cache to store proxies")
++		return errors.New("database disabled")
++	default:
++		DB = nil
++		log.Warnln("database unsupported: %s \n\t\tUse cache to store proxies", dbtype)
++		return errors.New("database type error")
++	}
++
++	DB, err = gorm.Open(dial, &gorm.Config{
+ 		Logger: logger.Default.LogMode(logger.Silent),
+ 	})
+ 	if err == nil {
+diff --git a/internal/database/proxy.go b/internal/database/proxy.go
+index 104ed20..1bfd458 100644
+--- a/internal/database/proxy.go
++++ b/internal/database/proxy.go
+@@ -41,7 +41,7 @@ func SaveProxyList(pl proxy.ProxyList) {
+ 
+ 	DB.Transaction(func(tx *gorm.DB) error {
+ 		// Set All Usable to false
+-		if err := DB.Model(&Proxy{}).Where("useable = ?", true).Update("useable", "false").Error; err != nil {
++		if err := DB.Model(&Proxy{}).Where("useable = ?", true).Update("useable", false).Error; err != nil {
+ 			log.Warnln("database: Reset useable to false failed: %s", err.Error())
+ 		}
+ 		// Create or Update proxies
+-- 
+2.40.0
+

@@ -1,0 +1,15 @@
+[Unit]
+Description=proxypool Service
+After=network.target
+
+[Service]
+Type=simple
+User=root
+Restart=on-failure
+RestartSec=5s
+WorkingDirectory=/usr/share/webapps/proxypool
+ExecStart=/usr/bin/proxypool -c /etc/proxypool/config.yaml
+LimitNOFILE=1048576
+
+[Install]
+WantedBy=multi-user.target

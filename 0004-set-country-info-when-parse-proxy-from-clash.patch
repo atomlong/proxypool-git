@@ -1,0 +1,81 @@
+From 243bc904573f379e0ab29d453b1810b6c485ff89 Mon Sep 17 00:00:00 2001
+From: atomlong <atom.long@hotmail.com>
+Date: Fri, 5 Nov 2021 16:32:29 +0800
+Subject: [PATCH 4/4] set country info when parse proxy from clash.
+
+---
+ pkg/proxy/base.go | 44 +++++++++++++++++++++++---------------------
+ 1 file changed, 23 insertions(+), 21 deletions(-)
+
+diff --git a/pkg/proxy/base.go b/pkg/proxy/base.go
+index 53619ac..a300345 100644
+--- a/pkg/proxy/base.go
++++ b/pkg/proxy/base.go
+@@ -108,6 +108,7 @@ func ParseProxyFromLink(link string) (p Proxy, err error) {
+ }
+ 
+ func ParseProxyFromClashProxy(p map[string]interface{}) (proxy Proxy, err error) {
++	var rProxy Proxy
+ 	p["name"] = ""
+ 	pjson, err := json.Marshal(p)
+ 	if err != nil {
+@@ -116,34 +117,35 @@ func ParseProxyFromClashProxy(p map[string]interface{}) (proxy Proxy, err error)
+ 	switch p["type"].(string) {
+ 	case "ss":
+ 		var proxy Shadowsocks
+-		err := json.Unmarshal(pjson, &proxy)
+-		if err != nil {
+-			return nil, err
+-		}
+-		return &proxy, nil
++		err = json.Unmarshal(pjson, &proxy)
++		rProxy = &proxy
+ 	case "ssr":
+ 		var proxy ShadowsocksR
+-		err := json.Unmarshal(pjson, &proxy)
+-		if err != nil {
+-			return nil, err
+-		}
+-		return &proxy, nil
++		err = json.Unmarshal(pjson, &proxy)
++		rProxy = &proxy
+ 	case "vmess":
+ 		var proxy Vmess
+-		err := json.Unmarshal(pjson, &proxy)
+-		if err != nil {
+-			return nil, err
+-		}
+-		return &proxy, nil
++		err = json.Unmarshal(pjson, &proxy)
++		rProxy = &proxy
+ 	case "trojan":
+ 		var proxy Trojan
+-		err := json.Unmarshal(pjson, &proxy)
+-		if err != nil {
+-			return nil, err
+-		}
+-		return &proxy, nil
++		err = json.Unmarshal(pjson, &proxy)
++		rProxy = &proxy
++	default:
++		return nil, errors.New("clash json parse failed")
+ 	}
+-	return nil, errors.New("clash json parse failed")
++
++	if err != nil {
++		return nil, err
++	}
++
++	_, country, err := geoIp.GeoIpDB.Find(rProxy.BaseInfo().Server) // IP库不准
++	if err != nil {
++		country = "🏁 ZZ"
++	}
++	rProxy.SetCountry(country)
++
++	return rProxy, nil
+ }
+ 
+ func GoodNodeThatClashUnsupported(b Proxy) bool {
+-- 
+2.40.0
+

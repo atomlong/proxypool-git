@@ -1,0 +1,33 @@
+pkgbase = proxypool-git
+	pkgdesc = Automatically grab ss, ssr, vmess, trojan node information from the Internet
+	pkgver = v0.7.12_27_gf4678f5
+	pkgrel = 1
+	url = https://github.com/ssrlive/proxypool
+	arch = i686
+	arch = x86_64
+	arch = arm
+	arch = armv6h
+	arch = armv7h
+	arch = aarch64
+	license = GPL3
+	makedepends = go
+	makedepends = git
+	provides = proxypool
+	conflicts = proxypool
+	options = !lto
+	source = proxypool::git+https://github.com/ssrlive/proxypool#tag=vv0.7.12_27_gf4678f5
+	source = https://github.com/atomlong/GeoLite.mmdb/releases/latest/download/GeoLite2-City.mmdb
+	source = proxypool.service
+	source = 0001-update-clash-config-template.patch
+	source = 0002-support-mysql.patch
+	source = 0003-Set-the-country-info-based-on-Out-IP.patch
+	source = 0004-set-country-info-when-parse-proxy-from-clash.patch
+	sha256sums = SKIP
+	sha256sums = SKIP
+	sha256sums = 647aebfb3e20dba9801fa28f8c22c5662fcb677949ffd679268a0e09e44f9c7c
+	sha256sums = 688a3b0e5d14338423457590d98b854cfc72e2364218327cc30b9e1cf6fc145e
+	sha256sums = 574d30c50e8062735251c25794fa973516ccc55330c4c1a087d053e7359a7179
+	sha256sums = 11fbdc921e125706afb288d475e836b4a858dd81af89e191c268e2fba0219934
+	sha256sums = c1daa40508da9d3aaf30691fbec2905c867707988ed3b1b50f41b2f54be0d732
+
+pkgname = proxypool-git
