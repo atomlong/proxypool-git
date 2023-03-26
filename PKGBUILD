@@ -3,7 +3,7 @@
 _pkgname=proxypool
 pkgname=${_pkgname}-git
 pkgver=v0.7.12_27_gf4678f5
-pkgrel=4
+pkgrel=5
 pkgdesc="Automatically grab ss, ssr, vmess, trojan node information from the Internet"
 arch=('i686' 'x86_64' 'arm' 'armv6h' 'armv7h' 'aarch64')
 url="https://github.com/ssrlive/proxypool"
@@ -17,15 +17,15 @@ source=("${pkgname/-git}::git+${url}"
         "${pkgname/-git}.service"
         "0001-update-clash-config-template.patch"
         "0002-support-mysql.patch"
-        "0003-Set-the-country-info-based-on-Out-IP.patch"
+        "0003-fix-country-filter.patch"
         "0004-set-country-info-when-parse-proxy-from-clash.patch")
 sha256sums=("SKIP"
             "SKIP"
             "647aebfb3e20dba9801fa28f8c22c5662fcb677949ffd679268a0e09e44f9c7c"
             "688a3b0e5d14338423457590d98b854cfc72e2364218327cc30b9e1cf6fc145e"
             "574d30c50e8062735251c25794fa973516ccc55330c4c1a087d053e7359a7179"
-            "11fbdc921e125706afb288d475e836b4a858dd81af89e191c268e2fba0219934"
-            "c1daa40508da9d3aaf30691fbec2905c867707988ed3b1b50f41b2f54be0d732")
+            "44ab6c2caaebd5f970db6a98385fc9d9f1a41c37917bf0a19f7f8abe24941c65"
+            "5b418a6bbcf56bbf83f03781a6f0f5b9190de32b4ccf3d600d2ced15c13bdfc8")
 
 export GOOS=linux
 case "$CARCH" in
@@ -46,7 +46,7 @@ prepare() {
   cd ${srcdir}/${pkgname/-git}
   git apply ../0001-update-clash-config-template.patch
   git apply ../0002-support-mysql.patch
-  git apply ../0003-Set-the-country-info-based-on-Out-IP.patch
+  git apply ../0003-fix-country-filter.patch
   git apply ../0004-set-country-info-when-parse-proxy-from-clash.patch
   cp -vf ../GeoLite2-City.mmdb assets/
   # Upgrade dependencies
