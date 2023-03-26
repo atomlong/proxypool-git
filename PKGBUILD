@@ -3,7 +3,7 @@
 _pkgname=proxypool
 pkgname=${_pkgname}-git
 pkgver=v0.7.12_27_gf4678f5
-pkgrel=2
+pkgrel=3
 pkgdesc="Automatically grab ss, ssr, vmess, trojan node information from the Internet"
 arch=('i686' 'x86_64' 'arm' 'armv6h' 'armv7h' 'aarch64')
 url="https://github.com/ssrlive/proxypool"
@@ -48,7 +48,7 @@ prepare() {
   git apply ../0002-support-mysql.patch
   git apply ../0003-Set-the-country-info-based-on-Out-IP.patch
   git apply ../0004-set-country-info-when-parse-proxy-from-clash.patch
-  mv -vf ../GeoLite2-City.mmdb assets/
+  cp -vf ../GeoLite2-City.mmdb assets/
   # Upgrade dependencies
   go get -u ./...
   # Remove unused dependencies
