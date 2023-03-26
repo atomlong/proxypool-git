@@ -15,7 +15,7 @@ pkgbase = proxypool-git
 	provides = proxypool
 	conflicts = proxypool
 	options = !lto
-	source = proxypool::git+https://github.com/ssrlive/proxypool#tag=vv0.7.12_27_gf4678f5
+	source = proxypool::git+https://github.com/ssrlive/proxypool
 	source = https://github.com/atomlong/GeoLite.mmdb/releases/latest/download/GeoLite2-City.mmdb
 	source = proxypool.service
 	source = 0001-update-clash-config-template.patch

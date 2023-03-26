@@ -12,7 +12,7 @@ makedepends=('go' 'git')
 options=(!lto)
 conflicts=("${pkgname/-git}")
 provides=("${pkgname/-git}")
-source=("${pkgname/-git}::git+${url}#tag=v${pkgver}"
+source=("${pkgname/-git}::git+${url}"
         "https://github.com/atomlong/GeoLite.mmdb/releases/latest/download/GeoLite2-City.mmdb"
         "${pkgname/-git}.service"
         "0001-update-clash-config-template.patch"
@@ -58,7 +58,6 @@ prepare() {
 build() {
   cd "${srcdir}/${pkgname/-git}"
   export GOPATH="${srcdir}"/gopath
-  go-bindata -o internal/bindata/geoip/geoip.go -pkg bingeoip  assets/GeoLite2-City.mmdb assets/flags.json
   make ${GOOS}-${GOARCH}
 }
 
