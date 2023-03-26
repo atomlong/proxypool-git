@@ -2,8 +2,8 @@
 
 _pkgname=proxypool
 pkgname=${_pkgname}-git
-pkgver=v0.7.12_27_gf4678f5
-pkgrel=5
+pkgver=0.7.12.r28.gae4e6bd
+pkgrel=6
 pkgdesc="Automatically grab ss, ssr, vmess, trojan node information from the Internet"
 arch=('i686' 'x86_64' 'arm' 'armv6h' 'armv7h' 'aarch64')
 url="https://github.com/ssrlive/proxypool"
@@ -22,7 +22,7 @@ source=("${pkgname/-git}::git+${url}"
 sha256sums=("SKIP"
             "SKIP"
             "647aebfb3e20dba9801fa28f8c22c5662fcb677949ffd679268a0e09e44f9c7c"
-            "688a3b0e5d14338423457590d98b854cfc72e2364218327cc30b9e1cf6fc145e"
+            "963bfe59c568359f3b2ba603bc1edf34c71a09e15990b5e6e819b5cc6dd7ea82"
             "574d30c50e8062735251c25794fa973516ccc55330c4c1a087d053e7359a7179"
             "44ab6c2caaebd5f970db6a98385fc9d9f1a41c37917bf0a19f7f8abe24941c65"
             "5b418a6bbcf56bbf83f03781a6f0f5b9190de32b4ccf3d600d2ced15c13bdfc8")
@@ -39,7 +39,7 @@ esac
 
 pkgver() {
   cd "${srcdir}/${pkgname/-git}"
-  git describe --tags --long | sed s/-/_/g
+  git describe --long --tags | sed 's/^v//;s/\([^-]*-g\)/r\1/;s/-/./g'
 }
 
 prepare() {

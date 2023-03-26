@@ -256,7 +256,7 @@ index fde0ee3..0318b79 100644
      type: http
 -    url: "http://127.0.0.1:{{ .port }}/clash/proxies?c=DE"
 -    path: localproviders/provider-de.yaml
-+    url: "http://127.0.0.1:{{ .port }}/clash/proxies?c=CN&filter=nrp"
++    url: "http://127.0.0.1:{{ .port }}/clash/proxies?c=CN"
 +    interval: 3600
 +    path: localproviders/provider-back.yaml
      health-check:
@@ -1779,7 +1779,7 @@ index 9085c67..b7f33c9 100644
      type: http
 -    url: "https://{{ .domain }}/clash/proxies?c=DE"
 -    path: {{ .domain }}/provider-de.yaml
-+    url: "https://{{ .domain }}/clash/proxies?c=CN&filter=nrp"
++    url: "https://{{ .domain }}/clash/proxies?c=CN"
 +    interval: 3600
 +    path: {{ .domain }}/provider-back.yaml
      health-check:
