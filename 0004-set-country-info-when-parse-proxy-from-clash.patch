@@ -1,4 +1,4 @@
-From c3527b49f84664dcfc459536c58d96ee4606c722 Mon Sep 17 00:00:00 2001
+From c3e6f147a5388ee2c1a694bdf0482c5a911bfdb7 Mon Sep 17 00:00:00 2001
 From: atomlong <atom.long@hotmail.com>
 Date: Fri, 5 Nov 2021 16:32:29 +0800
 Subject: [PATCH 4/4] set country info when parse proxy from clash.

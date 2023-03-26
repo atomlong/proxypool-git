@@ -22,10 +22,10 @@ source=("${pkgname/-git}::git+${url}"
 sha256sums=("SKIP"
             "SKIP"
             "647aebfb3e20dba9801fa28f8c22c5662fcb677949ffd679268a0e09e44f9c7c"
-            "9c9ff209756b69657ffaa96315772f47e41ddce35247d9315d61c1fed03e0112"
-            "fda238613d9cdd1d23a6bea4dd8a4ef9f44bcd996ad7db71081462d34628f47a"
-            "8944bbc6101a670d47d008a5ddc395efb2940934b85101ef8cd844fcb216bbe4"
-            "e24c042130703fa8bb6ed23db32d521487c7e06ced084ce35330f423ccd27eb7")
+            "1a8915694088e07669d73a476003b963df9d1b7a53219b9b4e1591aa2a733503"
+            "dbe6f6d6b498148f8ae6c7dbaf5220242734865bcaeffa90a52747dfd9c4e838"
+            "c21d8e561870156a07bd2d34eab4feb8aae16678ebaa3b8e00f64a10d5fc7d57"
+            "6af8f7e8f9021cecabfab4f638012fa99874f2a1b1878c76b087a070d619ca30")
 
 export GOOS=linux
 case "$CARCH" in
