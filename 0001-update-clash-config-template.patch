@@ -1,18 +1,18 @@
-From 11a7b2ab8c8607ad019e2a8f684053a0f6a89476 Mon Sep 17 00:00:00 2001
+From a2a21120d48598e71ce3039f6ed70b982ad11940 Mon Sep 17 00:00:00 2001
 From: atom long <atom.long@hotmail.com>
 Date: Sun, 26 Mar 2023 12:23:15 +0800
 Subject: [PATCH 1/4] update clash config template.
 
 ---
- assets/html/clash-config-local.yaml | 1404 ++++-----------------------
- assets/html/clash-config.yaml       | 1404 ++++-----------------------
- 2 files changed, 368 insertions(+), 2440 deletions(-)
+ assets/html/clash-config-local.yaml | 1403 ++++-----------------------
+ assets/html/clash-config.yaml       | 1403 ++++-----------------------
+ 2 files changed, 360 insertions(+), 2446 deletions(-)
 
 diff --git a/assets/html/clash-config-local.yaml b/assets/html/clash-config-local.yaml
-index fde0ee3..bc676af 100644
+index fde0ee3..0eb6bac 100644
 --- a/assets/html/clash-config-local.yaml
 +++ b/assets/html/clash-config-local.yaml
-@@ -24,109 +24,82 @@ proxy-groups:
+@@ -24,229 +24,187 @@ proxy-groups:
    - name: 全局选择
      type: select
      proxies:
@@ -24,7 +24,6 @@ index fde0ee3..bc676af 100644
        - 失败切换
        - 负载均衡
 -  - name: 选择国家
-+      - 出国通道
 +      - 返回通道
 +  - name: 选择地区
      type: select
@@ -152,16 +151,24 @@ index fde0ee3..bc676af 100644
    - name: 延迟最低
      type: url-test
      use:
-@@ -145,108 +118,100 @@ proxy-groups:
-       - all
+-      - all
++      - proxy
      url: 'http://www.gstatic.com/generate_204'
      interval: 300
-+  - name: 出国通道
-+    type: url-test
-+    use:
+   - name: 负载均衡
+     type: load-balance
+     use:
+-      - all
 +      - proxy
-+    url: 'http://www.gstatic.com/generate_204'
-+    interval: 300
+     url: 'http://www.gstatic.com/generate_204'
+     interval: 300
+   - name: 失败切换
+     type: fallback
+     use:
+-      - all
++      - proxy
+     url: 'http://www.gstatic.com/generate_204'
+     interval: 300
  
  proxy-providers:
 -  au:
@@ -289,7 +296,7 @@ index fde0ee3..bc676af 100644
      type: http
 -    url: "http://127.0.0.1:{{ .port }}/clash/proxies?c=NL"
 -    path: localproviders/provider-nl.yaml
-+    url: "http://127.0.0.1:{{ .port }}/clash/proxies?c=CN&filter=nrp"
++    url: "http://127.0.0.1:{{ .port }}/clash/proxies?c=CN"
 +    interval: 3600
 +    path: localproviders/provider-back.yaml
      health-check:
@@ -307,7 +314,7 @@ index fde0ee3..bc676af 100644
      health-check:
        enable: true
        interval: 600
-@@ -254,6 +219,7 @@ proxy-providers:
+@@ -254,6 +212,7 @@ proxy-providers:
    all:
      type: http
      url: "http://127.0.0.1:{{ .port }}/clash/proxies"
@@ -315,7 +322,7 @@ index fde0ee3..bc676af 100644
      path: localproviders/provider.yaml
      health-check:
        enable: true
-@@ -261,1120 +227,118 @@ proxy-providers:
+@@ -261,1120 +220,118 @@ proxy-providers:
        url: http://www.gstatic.com/generate_204
  
  rules:
@@ -329,14 +336,14 @@ index fde0ee3..bc676af 100644
 +  - RULE-SET,icloud,DIRECT
 +  - RULE-SET,apple,DIRECT
 +  - RULE-SET,google,DIRECT
-+  - RULE-SET,proxy,出国通道
++  - RULE-SET,proxy,延迟最低
 +  - RULE-SET,direct,DIRECT
 +  - RULE-SET,lancidr,DIRECT
 +  - RULE-SET,cncidr,DIRECT
-+  - RULE-SET,telegramcidr,出国通道
++  - RULE-SET,telegramcidr,延迟最低
 +  - GEOIP,LAN,DIRECT
 +  - GEOIP,CN,DIRECT
-+  - MATCH,出国通道
++  - MATCH,延迟最低
  
 -  - DOMAIN-SUFFIX,ampproject.org,全局选择
 -  - DOMAIN-SUFFIX,appspot.com,全局选择
@@ -885,7 +892,7 @@ index fde0ee3..bc676af 100644
 +  reject:
 +    type: http
 +    behavior: domain
-+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/reject.txt"
++    url: "https://ghproxy.com/https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/reject.txt"
 +    path: ./ruleset/reject.yaml
 +    interval: 86400
  
@@ -904,7 +911,7 @@ index fde0ee3..bc676af 100644
 +  icloud:
 +    type: http
 +    behavior: domain
-+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/icloud.txt"
++    url: "https://ghproxy.com/https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/icloud.txt"
 +    path: ./ruleset/icloud.yaml
 +    interval: 86400
  
@@ -925,7 +932,7 @@ index fde0ee3..bc676af 100644
 +  apple:
 +    type: http
 +    behavior: domain
-+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/apple.txt"
++    url: "https://ghproxy.com/https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/apple.txt"
 +    path: ./ruleset/apple.yaml
 +    interval: 86400
  
@@ -935,7 +942,7 @@ index fde0ee3..bc676af 100644
 +  google:
 +    type: http
 +    behavior: domain
-+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/google.txt"
++    url: "https://ghproxy.com/https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/google.txt"
 +    path: ./ruleset/google.yaml
 +    interval: 86400
  
@@ -968,7 +975,7 @@ index fde0ee3..bc676af 100644
 +  proxy:
 +    type: http
 +    behavior: domain
-+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/proxy.txt"
++    url: "https://ghproxy.com/https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/proxy.txt"
 +    path: ./ruleset/proxy.yaml
 +    interval: 86400
  
@@ -1128,7 +1135,7 @@ index fde0ee3..bc676af 100644
 +  direct:
 +    type: http
 +    behavior: domain
-+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/direct.txt"
++    url: "https://ghproxy.com/https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/direct.txt"
 +    path: ./ruleset/direct.yaml
 +    interval: 86400
  
@@ -1490,28 +1497,28 @@ index fde0ee3..bc676af 100644
 +  private:
 +    type: http
 +    behavior: domain
-+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/private.txt"
++    url: "https://ghproxy.com/https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/private.txt"
 +    path: ./ruleset/private.yaml
 +    interval: 86400
 +
 +  gfw:
 +    type: http
 +    behavior: domain
-+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/gfw.txt"
++    url: "https://ghproxy.com/https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/gfw.txt"
 +    path: ./ruleset/gfw.yaml
 +    interval: 86400
 +
 +  greatfire:
 +    type: http
 +    behavior: domain
-+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/greatfire.txt"
++    url: "https://ghproxy.com/https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/greatfire.txt"
 +    path: ./ruleset/greatfire.yaml
 +    interval: 86400
 +
 +  tld-not-cn:
 +    type: http
 +    behavior: domain
-+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/tld-not-cn.txt"
++    url: "https://ghproxy.com/https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/tld-not-cn.txt"
 +    path: ./ruleset/tld-not-cn.yaml
 +    interval: 86400
  
@@ -1520,35 +1527,35 @@ index fde0ee3..bc676af 100644
 +  telegramcidr:
 +    type: http
 +    behavior: ipcidr
-+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/telegramcidr.txt"
++    url: "https://ghproxy.com/https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/telegramcidr.txt"
 +    path: ./ruleset/telegramcidr.yaml
 +    interval: 86400
 +
 +  cncidr:
 +    type: http
 +    behavior: ipcidr
-+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/cncidr.txt"
++    url: "https://ghproxy.com/https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/cncidr.txt"
 +    path: ./ruleset/cncidr.yaml
 +    interval: 86400
 +
 +  lancidr:
 +    type: http
 +    behavior: ipcidr
-+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/lancidr.txt"
++    url: "https://ghproxy.com/https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/lancidr.txt"
 +    path: ./ruleset/lancidr.yaml
 +    interval: 86400
 +
 +  applications:
 +    type: http
 +    behavior: classical
-+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/applications.txt"
++    url: "https://ghproxy.com/https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/applications.txt"
 +    path: ./ruleset/applications.yaml
 +    interval: 86400
 diff --git a/assets/html/clash-config.yaml b/assets/html/clash-config.yaml
-index 9085c67..2c90eca 100644
+index 9085c67..0da1a89 100644
 --- a/assets/html/clash-config.yaml
 +++ b/assets/html/clash-config.yaml
-@@ -24,109 +24,82 @@ proxy-groups:
+@@ -24,229 +24,187 @@ proxy-groups:
    - name: 全局选择
      type: select
      proxies:
@@ -1560,7 +1567,6 @@ index 9085c67..2c90eca 100644
        - 失败切换
        - 负载均衡
 -  - name: 选择国家
-+      - 出国通道
 +      - 返回通道
 +  - name: 选择地区
      type: select
@@ -1688,16 +1694,24 @@ index 9085c67..2c90eca 100644
    - name: 延迟最低
      type: url-test
      use:
-@@ -145,108 +118,100 @@ proxy-groups:
-       - all
+-      - all
++      - proxy
      url: 'http://www.gstatic.com/generate_204'
      interval: 300
-+  - name: 出国通道
-+    type: url-test
-+    use:
+   - name: 负载均衡
+     type: load-balance
+     use:
+-      - all
 +      - proxy
-+    url: 'http://www.gstatic.com/generate_204'
-+    interval: 300
+     url: 'http://www.gstatic.com/generate_204'
+     interval: 300
+   - name: 失败切换
+     type: fallback
+     use:
+-      - all
++      - proxy
+     url: 'http://www.gstatic.com/generate_204'
+     interval: 300
  
  proxy-providers:
 -  au:
@@ -1825,7 +1839,7 @@ index 9085c67..2c90eca 100644
      type: http
 -    url: "https://{{ .domain }}/clash/proxies?c=NL"
 -    path: {{ .domain }}/provider-nl.yaml
-+    url: "https://{{ .domain }}/clash/proxies?c=CN&filter=nrp"
++    url: "https://{{ .domain }}/clash/proxies?c=CN"
 +    interval: 3600
 +    path: {{ .domain }}/provider-back.yaml
      health-check:
@@ -1843,7 +1857,7 @@ index 9085c67..2c90eca 100644
      health-check:
        enable: true
        interval: 600
-@@ -254,6 +219,7 @@ proxy-providers:
+@@ -254,6 +212,7 @@ proxy-providers:
    all:
      type: http
      url: "https://{{ .domain }}/clash/proxies"
@@ -1851,7 +1865,7 @@ index 9085c67..2c90eca 100644
      path: {{ .domain }}/provider.yaml
      health-check:
        enable: true
-@@ -261,1120 +227,118 @@ proxy-providers:
+@@ -261,1120 +220,118 @@ proxy-providers:
        url: http://www.gstatic.com/generate_204
  
  rules:
@@ -1865,14 +1879,14 @@ index 9085c67..2c90eca 100644
 +  - RULE-SET,icloud,DIRECT
 +  - RULE-SET,apple,DIRECT
 +  - RULE-SET,google,DIRECT
-+  - RULE-SET,proxy,出国通道
++  - RULE-SET,proxy,延迟最低
 +  - RULE-SET,direct,DIRECT
 +  - RULE-SET,lancidr,DIRECT
 +  - RULE-SET,cncidr,DIRECT
-+  - RULE-SET,telegramcidr,出国通道
++  - RULE-SET,telegramcidr,延迟最低
 +  - GEOIP,LAN,DIRECT
 +  - GEOIP,CN,DIRECT
-+  - MATCH,出国通道
++  - MATCH,延迟最低
  
 -  - DOMAIN-SUFFIX,ampproject.org,全局选择
 -  - DOMAIN-SUFFIX,appspot.com,全局选择
@@ -2421,7 +2435,7 @@ index 9085c67..2c90eca 100644
 +  reject:
 +    type: http
 +    behavior: domain
-+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/reject.txt"
++    url: "https://ghproxy.com/https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/reject.txt"
 +    path: ./ruleset/reject.yaml
 +    interval: 86400
  
@@ -2440,7 +2454,7 @@ index 9085c67..2c90eca 100644
 +  icloud:
 +    type: http
 +    behavior: domain
-+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/icloud.txt"
++    url: "https://ghproxy.com/https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/icloud.txt"
 +    path: ./ruleset/icloud.yaml
 +    interval: 86400
  
@@ -2461,7 +2475,7 @@ index 9085c67..2c90eca 100644
 +  apple:
 +    type: http
 +    behavior: domain
-+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/apple.txt"
++    url: "https://ghproxy.com/https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/apple.txt"
 +    path: ./ruleset/apple.yaml
 +    interval: 86400
  
@@ -2471,7 +2485,7 @@ index 9085c67..2c90eca 100644
 +  google:
 +    type: http
 +    behavior: domain
-+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/google.txt"
++    url: "https://ghproxy.com/https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/google.txt"
 +    path: ./ruleset/google.yaml
 +    interval: 86400
  
@@ -2504,7 +2518,7 @@ index 9085c67..2c90eca 100644
 +  proxy:
 +    type: http
 +    behavior: domain
-+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/proxy.txt"
++    url: "https://ghproxy.com/https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/proxy.txt"
 +    path: ./ruleset/proxy.yaml
 +    interval: 86400
  
@@ -2664,7 +2678,7 @@ index 9085c67..2c90eca 100644
 +  direct:
 +    type: http
 +    behavior: domain
-+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/direct.txt"
++    url: "https://ghproxy.com/https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/direct.txt"
 +    path: ./ruleset/direct.yaml
 +    interval: 86400
  
@@ -3026,28 +3040,28 @@ index 9085c67..2c90eca 100644
 +  private:
 +    type: http
 +    behavior: domain
-+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/private.txt"
++    url: "https://ghproxy.com/https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/private.txt"
 +    path: ./ruleset/private.yaml
 +    interval: 86400
 +
 +  gfw:
 +    type: http
 +    behavior: domain
-+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/gfw.txt"
++    url: "https://ghproxy.com/https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/gfw.txt"
 +    path: ./ruleset/gfw.yaml
 +    interval: 86400
 +
 +  greatfire:
 +    type: http
 +    behavior: domain
-+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/greatfire.txt"
++    url: "https://ghproxy.com/https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/greatfire.txt"
 +    path: ./ruleset/greatfire.yaml
 +    interval: 86400
 +
 +  tld-not-cn:
 +    type: http
 +    behavior: domain
-+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/tld-not-cn.txt"
++    url: "https://ghproxy.com/https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/tld-not-cn.txt"
 +    path: ./ruleset/tld-not-cn.yaml
 +    interval: 86400
  
@@ -3056,28 +3070,28 @@ index 9085c67..2c90eca 100644
 +  telegramcidr:
 +    type: http
 +    behavior: ipcidr
-+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/telegramcidr.txt"
++    url: "https://ghproxy.com/https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/telegramcidr.txt"
 +    path: ./ruleset/telegramcidr.yaml
 +    interval: 86400
 +
 +  cncidr:
 +    type: http
 +    behavior: ipcidr
-+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/cncidr.txt"
++    url: "https://ghproxy.com/https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/cncidr.txt"
 +    path: ./ruleset/cncidr.yaml
 +    interval: 86400
 +
 +  lancidr:
 +    type: http
 +    behavior: ipcidr
-+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/lancidr.txt"
++    url: "https://ghproxy.com/https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/lancidr.txt"
 +    path: ./ruleset/lancidr.yaml
 +    interval: 86400
 +
 +  applications:
 +    type: http
 +    behavior: classical
-+    url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/applications.txt"
++    url: "https://ghproxy.com/https://raw.githubusercontent.com/Loyalsoldier/clash-rules/release/applications.txt"
 +    path: ./ruleset/applications.yaml
 +    interval: 86400
 -- 

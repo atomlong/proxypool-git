@@ -3,7 +3,7 @@
 _pkgname=proxypool
 pkgname=${_pkgname}-git
 pkgver=0.7.12.r28.gae4e6bd
-pkgrel=7
+pkgrel=8
 pkgdesc="Automatically grab ss, ssr, vmess, trojan node information from the Internet"
 arch=('i686' 'x86_64' 'arm' 'armv6h' 'armv7h' 'aarch64')
 url="https://github.com/ssrlive/proxypool"
@@ -22,10 +22,10 @@ source=("${pkgname/-git}::git+${url}"
 sha256sums=("SKIP"
             "SKIP"
             "647aebfb3e20dba9801fa28f8c22c5662fcb677949ffd679268a0e09e44f9c7c"
-            "facd3b5e27c18624e5b8b5133877d60b8f69a0397c9ec0e35dac97a739ff390a"
-            "55a1a35055002aa8f7363ed0e4e3cddaf9c736d0526c9f2938eaf9101def7db2"
-            "25444561163e8c10920e28a04c6f7cf88c40ac12a4c7744a9536db704785c7f8"
-            "18e20a28036c724ac7a7954aafc678c77a2cf1598e805650d90dc2d62fc0b895")
+            "e8cd740da23be8aaf1e577f9c8816a3201a1814c8ae95771a2e25d445e9cb214"
+            "5140f9054841c1c01af89d4f0f76bf8dbed3a6e1b7731bed75f3532ac1db6976"
+            "8d099c9929f67ef3a1f3ccbd5817f65c29b7a0514e6aa3566b19c731f543a79a"
+            "9246f847696539c9903125e4ec39eb618df244ef4ffcf6dd05a808dba70958f7")
 
 export GOOS=linux
 case "$CARCH" in
