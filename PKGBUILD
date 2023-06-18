@@ -2,8 +2,8 @@
 
 _pkgname=proxypool
 pkgname=${_pkgname}-git
-pkgver=0.7.12.r28.gae4e6bd
-pkgrel=8
+pkgver=0.7.13.r0.g4e25e5a
+pkgrel=1
 pkgdesc="Automatically grab ss, ssr, vmess, trojan node information from the Internet"
 arch=('i686' 'x86_64' 'arm' 'armv6h' 'armv7h' 'aarch64')
 url="https://github.com/ssrlive/proxypool"
@@ -22,7 +22,7 @@ source=("${pkgname/-git}::git+${url}"
 sha256sums=("SKIP"
             "SKIP"
             "647aebfb3e20dba9801fa28f8c22c5662fcb677949ffd679268a0e09e44f9c7c"
-            "e8cd740da23be8aaf1e577f9c8816a3201a1814c8ae95771a2e25d445e9cb214"
+            "d9ae62b8bfdfa9b51d39cc6397ba7154c88c82b2650208ab948a850a22f31f92"
             "5140f9054841c1c01af89d4f0f76bf8dbed3a6e1b7731bed75f3532ac1db6976"
             "8d099c9929f67ef3a1f3ccbd5817f65c29b7a0514e6aa3566b19c731f543a79a"
             "9246f847696539c9903125e4ec39eb618df244ef4ffcf6dd05a808dba70958f7")
